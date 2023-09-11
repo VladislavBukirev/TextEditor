@@ -50,11 +50,6 @@ def copy_text():
         text.clipboard_append(selected_text)
 
 
-def paste_text():
-    text.clipboard_append(text.clipboard_get())
-    text.update()
-
-
 def cut_text():
     selected_text = text.selection_get()
     if selected_text:
@@ -63,10 +58,17 @@ def cut_text():
         text.clipboard_append(selected_text)
 
 
-root = tkinter.Tk()
-root.title("Text editor")
+def paste_text():
+    clipboard_text = text.clipboard_get()
+    if clipboard_text:
+        text.insert(tkinter.INSERT, clipboard_text)
+    text.update()
 
-root.minsize(width=400, height=400)
+
+root = tkinter.Tk()
+root.title("CDL Notepad v.0.1")
+
+root.minsize(width=500, height=500)
 root.maxsize(width=500, height=500)
 
 text = tkinter.Text(root, width=400, height=400, wrap="word")
