@@ -64,9 +64,9 @@ def cut_text():
 
 
 root = tkinter.Tk()
-root.title("CDL Notepad v.0.1")
+root.title("Text editor")
 
-root.minsize(width=500, height=500)
+root.minsize(width=400, height=400)
 root.maxsize(width=500, height=500)
 
 text = tkinter.Text(root, width=400, height=400, wrap="word")
@@ -77,12 +77,12 @@ text.configure(yscrollcommand=scroll_bar.set)
 text.pack()
 menu_bar = tkinter.Menu(root)
 
-fileMenu = tkinter.Menu(menu_bar, tearoff=0)
-menu_bar.add_cascade(label="File", menu=fileMenu)
-fileMenu.add_command(label="New", command=new_file)
-fileMenu.add_command(label="Open", command=open_file)
-fileMenu.add_command(label="Save", command=save_file)
-fileMenu.add_command(label="Save as", command=save_as)
+file_menu = tkinter.Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="New", command=new_file)
+file_menu.add_command(label="Open", command=open_file)
+file_menu.add_command(label="Save", command=save_file)
+file_menu.add_command(label="Save as", command=save_as)
 
 edit_menu = tkinter.Menu(menu_bar, tearoff=0)
 menu_bar.add_cascade(label="Edit", menu=edit_menu)
