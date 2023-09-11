@@ -55,6 +55,14 @@ def paste_text():
     text.update()
 
 
+def cut_text():
+    selected_text = text.selection_get()
+    if selected_text:
+        text.delete(tkinter.SEL_FIRST, tkinter.SEL_LAST)
+        text.clipboard_clear()
+        text.clipboard_append(selected_text)
+
+
 root = tkinter.Tk()
 root.title("CDL Notepad v.0.1")
 
@@ -67,21 +75,24 @@ scroll_bar.pack(side="right", fill="y")
 text.configure(yscrollcommand=scroll_bar.set)
 
 text.pack()
-menuBar = tkinter.Menu(root)
+menu_bar = tkinter.Menu(root)
 
-fileMenu = tkinter.Menu(menuBar, tearoff=0)
+fileMenu = tkinter.Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="File", menu=fileMenu)
 fileMenu.add_command(label="New", command=new_file)
 fileMenu.add_command(label="Open", command=open_file)
 fileMenu.add_command(label="Save", command=save_file)
 fileMenu.add_command(label="Save as", command=save_as)
-menuBar.add_cascade(label="File", menu=fileMenu)
 
-editMenu = tkinter.Menu(menuBar, tearoff=0)
-editMenu.add_command(label="Copy", command=copy_text)
-editMenu.add_command(label="Paste", command=paste_text)
-menuBar.add_cascade(label="Edit", menu=editMenu)
+edit_menu = tkinter.Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="Edit", menu=edit_menu)
+edit_menu.add_command(label="Copy", command=copy_text)
+edit_menu.add_command(label="Paste", command=paste_text)
+edit_menu.add_command(label="Cut", command=cut_text)
 
-menuBar.add_cascade(label="Info", command=info)
+menu_bar.add_cascade(label="Info", command=info)
 
-root.config(menu=menuBar)
+menu_bar.add_cascade(label="Exit", command=root.quit)
+
+root.config(menu=menu_bar)
 root.mainloop()
