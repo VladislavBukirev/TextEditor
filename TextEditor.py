@@ -17,7 +17,10 @@ def new_file(*args):
 
 def save_file(*args):
     data = text.get('1.0', tkinter.END)
-    out = open(FILE_NAME, 'w')
+    try:
+        out = open(FILE_NAME, 'w')
+    except FileNotFoundError:
+        out = open(FILE_NAME, 'x')
     out.write(data)
     out.close()
 
@@ -31,12 +34,15 @@ def save_as(*args):
         showerror(title="Error", message="Saving file error")
 
 
-def open_file(*args):
+def open_file(caller, file=None):
     global FILE_NAME
     global INP
     global BYTE_NUMBERS_ARRAY
     global POINTER
-    INP = askopenfile(mode="r+")
+    if file is None:
+        INP = askopenfile(mode="r+")
+    else:
+        INP = open(file, mode="r+")
     if INP is None:
         return
     FILE_NAME = INP.name
@@ -163,4 +169,7 @@ menu_bar.add_cascade(label="Previous portion", command=prev_portion)
 root.bind("<Alt-b>", prev_portion)
 
 root.config(menu=menu_bar)
-root.mainloop()
+
+
+if __name__ == '__main__':
+    root.mainloop()
