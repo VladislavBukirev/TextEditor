@@ -36,7 +36,7 @@ def open_file(*args):
     global INP
     global BYTE_NUMBERS_ARRAY
     global POINTER
-    INP = askopenfile(mode="r")
+    INP = askopenfile(mode="r+")
     if INP is None:
         return
     FILE_NAME = INP.name
@@ -49,35 +49,52 @@ def open_file(*args):
 
 
 def next_portion(*args):
-    global FILE_NAME
     global BYTE_NUMBERS_ARRAY
     global INP
     global POINTER
-    if FILE_NAME is tkinter.NONE:
+    if INP.name is tkinter.NONE:
         return
+    save_portion()
     text.delete('1.0', tkinter.END)
     for i in range(5):
         data = INP.readline()
         text.insert(tkinter.END, data)
-    if POINTER == len(BYTE_NUMBERS_ARRAY) and INP.tell() != BYTE_NUMBERS_ARRAY[-1]:
-        BYTE_NUMBERS_ARRAY.append(INP.tell())
+
     if INP.tell() != BYTE_NUMBERS_ARRAY[-1]:
+        if POINTER == len(BYTE_NUMBERS_ARRAY) - 2:
+            BYTE_NUMBERS_ARRAY.append(INP.tell())
+        else:
+            BYTE_NUMBERS_ARRAY[POINTER + 1] = INP.tell()
         POINTER += 1
 
 
 def prev_portion(*args):
-    global FILE_NAME
     global BYTE_NUMBERS_ARRAY
     global INP
     global POINTER
-    if FILE_NAME is tkinter.NONE or POINTER == 0:
+    if INP.name is tkinter.NONE or POINTER == 0:
         return
+    save_portion()
     text.delete('1.0', tkinter.END)
     INP.seek(BYTE_NUMBERS_ARRAY[POINTER - 1])
     for i in range(5):
         data = INP.readline()
         text.insert(tkinter.END, data)
     POINTER -= 1
+
+
+def save_portion():
+    global BYTE_NUMBERS_ARRAY
+    global POINTER
+    global INP
+    file = open(INP.name, 'r+')
+    file.seek(BYTE_NUMBERS_ARRAY[POINTER])
+    content = text.get('1.0', 'end-1c')
+    if POINTER != len(BYTE_NUMBERS_ARRAY) - 1:
+        BYTE_NUMBERS_ARRAY[POINTER + 1] = BYTE_NUMBERS_ARRAY[POINTER] + file.write(content) + 5
+    else:
+        BYTE_NUMBERS_ARRAY.append(BYTE_NUMBERS_ARRAY[POINTER] + file.write(content) + 5)
+    file.close()
 
 
 def info():
