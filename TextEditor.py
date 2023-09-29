@@ -9,6 +9,16 @@ INP = None
 CONTENT = ""
 
 
+def ask_save_dialog():
+    result = tkinter.messagebox.askyesnocancel(title="Save File", message="Do you want to save the current file?")
+    if result is True:
+        return "yes"
+    elif result is False:
+        return "no"
+    else:
+        return "cancel"
+
+
 def new_file(*args):
     global FILE_NAME
     FILE_NAME = "Untitled"

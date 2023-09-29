@@ -4,8 +4,16 @@ import TextEditor
 
 
 def new_file():
-    text.delete('1.0', tkinter.END)
+    global text
+
+    save_option = TextEditor.ask_save_dialog()
+    if save_option == "yes":
+        save()
+    elif save_option == "cancel":
+        return
+
     TextEditor.new_file()
+    text.delete('1.0', tkinter.END)
 
 
 def save_as():
